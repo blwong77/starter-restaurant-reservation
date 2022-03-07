@@ -1,3 +1,4 @@
+const methodNotAllowed = require("../errors/methodNotAllowed")
 /**
  * Defines the router for reservation resources.
  *
@@ -7,7 +8,6 @@
 const router = require("express").Router();
 const controller = require("./reservations.controller");
 
-router.route("/").get(controller.list);
-router.route("/new").post(controller.create)
+router.route("/").get(controller.list).post(controller.create).all(methodNotAllowed);
 
 module.exports = router;
