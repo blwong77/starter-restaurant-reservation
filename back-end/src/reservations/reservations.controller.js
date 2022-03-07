@@ -14,7 +14,10 @@ const checkDate = require("./validation/checkDate");
  * List handler for reservation resources
  */
 async function list(req, res) {
-  const data = await service.getAllReservations()
+  let date = req.query.date;
+  if(!date) date = new Date().toISOString().slice(0,10);
+  
+  const data = await service.getReservationsByDate(date);
   res.json({
     data,
   });
