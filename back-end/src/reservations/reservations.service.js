@@ -1,8 +1,8 @@
 const knex = require("../db/connection");
 
-const table = "reservations"
+const table = "reservations";
 
-function getAllReservations() {
+function getReservationsByDate(date) {
   return knex(table)
     .select(
       "reservation_id",
@@ -12,7 +12,8 @@ function getAllReservations() {
       "reservation_date",
       "reservation_time",
       "people"
-    );
+    )
+    .where({ reservation_date: date });
 }
 
 function createReservation(reservation) {
@@ -23,6 +24,6 @@ function createReservation(reservation) {
 }
 
 module.exports = {
-  getAllReservations,
+  getReservationsByDate,
   createReservation,
 };
