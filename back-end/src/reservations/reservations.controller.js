@@ -25,7 +25,7 @@ async function list(req, res) {
 
 async function create(req, res) {
   const reservationData = res.locals.reservationData;
-  console.log(reservationData);
+
   const newReservation = await service.createReservation(reservationData);
   res.status(201).json({data: newReservation});
 }
