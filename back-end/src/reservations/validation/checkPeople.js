@@ -5,7 +5,7 @@ function checkPeople(req, res, next) {
     res.locals.reservationData.people = Number(people);
     return next();
   }
-  next({ status: 404, message: "People are required" });
+  next({ status: 400, message: "People are required" });
 }
 
 module.exports = checkPeople;

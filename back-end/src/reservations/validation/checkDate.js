@@ -5,7 +5,7 @@ function checkDate(req, res, next) {
     res.locals.reservationData.reservation_date = date;
     return next();
   }
-  next({ status: 404, message: "Date is required" });
+  next({ status: 400, message: "Date is required" });
 }
 
 module.exports = checkDate;

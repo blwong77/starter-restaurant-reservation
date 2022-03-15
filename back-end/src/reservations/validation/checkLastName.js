@@ -5,7 +5,7 @@ function checkLastName(req, res, next) {
     res.locals.reservationData.last_name = lastName;
     return next();
   }
-  next({ status: 404, message: "Last name is required" });
+  next({ status: 400, message: "Last name is required" });
 }
 
 module.exports = checkLastName;

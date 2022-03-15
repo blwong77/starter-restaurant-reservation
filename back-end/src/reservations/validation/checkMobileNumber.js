@@ -5,7 +5,7 @@ function checkMobileNumber(req, res, next) {
     res.locals.reservationData.mobile_number = mobileNumber;
     return next();
   }
-  next({ status: 404, message: "Mobile number is required" });
+  next({ status: 400, message: "Mobile number is required" });
 }
 
 module.exports = checkMobileNumber;
