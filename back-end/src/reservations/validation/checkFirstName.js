@@ -6,7 +6,7 @@ function checkFirstName(req, res, next) {
     res.locals.reservationData.first_name = firstName;
     return next();
   }
-  next({ status: 400, message: "First name is required" });
+  next({ status: 400, message: "first_name is required" });
 }
 
 module.exports = checkFirstName;
