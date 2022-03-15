@@ -3,6 +3,7 @@ const service = require("./reservations.service");
 /**
  * Validation Imports
  */
+const checkData = require("./validation/checkData")
 const checkFirstName = require("./validation/checkFirstName");
 const checkLastName = require("./validation/checkLastName");
 const checkMobileNumber = require("./validation/checkMobileNumber");
@@ -33,6 +34,7 @@ async function create(req, res) {
 module.exports = {
   list,
   create: [
+    checkData,
     checkFirstName,
     checkLastName,
     checkMobileNumber,
