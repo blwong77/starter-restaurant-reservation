@@ -13,7 +13,8 @@ function getReservationsByDate(date) {
       "reservation_time",
       "people"
     )
-    .where({ reservation_date: date });
+    .where({ reservation_date: date })
+    .orderBy("reservation_time");
 }
 
 function createReservation(reservation) {
