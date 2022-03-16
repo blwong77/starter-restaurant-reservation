@@ -4,7 +4,7 @@ export default function TableData({ tableData }) {
   return (
     <>
       {tableData.map((data) => (
-        <td>{data}</td>
+        <td key={data.toString()}>{data}</td>
       ))}
     </>
   );

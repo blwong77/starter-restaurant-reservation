@@ -4,7 +4,7 @@ export default function TableHeaders({ headerCols }) {
   return (
     <>
       {headerCols.map((col) => (
-        <th>{col}</th>
+        <th key={col.toString()}>{col}</th>
       ))}
     </>
   );

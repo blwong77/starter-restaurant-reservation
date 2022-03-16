@@ -26,7 +26,7 @@ export default function ReservationsTable({ reservations }) {
               people,
             } = reservation;
             return (
-              <tr>
+              <tr key={reservation_id}>
                 <TableData
                   tableData={[
                     reservation_id,
