@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { createReservations } from "../utils/api";
+import { today } from "../utils/date-time";
 
-export default function ReservationForm() {
+export default function ReservationForm({ setErrors }) {
   const INITIAL_RESERVATION_FORM_DATA = {
     first_name: "",
     last_name: "",
@@ -12,6 +13,7 @@ export default function ReservationForm() {
     people: "",
   };
   const history = useHistory();
+  
   const [reservationFormData, setReservationFormData] = useState({
     ...INITIAL_RESERVATION_FORM_DATA,
   });
@@ -28,17 +30,31 @@ export default function ReservationForm() {
         });
   };
 
-  const handleCancel = () => {
-    history.go(-1);
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const errorArray = [];  
+    
+    //Date Validation - Restaurant is closed on 2/Tuesday
+    const reservationDate = new Date(reservationFormData.reservation_date)
+    const currentDate = new Date(today())
+    if(reservationDate.getUTCDay() === 2) {
+      errorArray.push("The restaurant is closed on Tuesdays.")
+    }
+    if(reservationDate < currentDate) {
+      errorArray.push("Please place a reservation for today or a future day.")
+    }
 
-    await createReservations({ data: reservationFormData });
-
-    // go to /dashboard page for that date
-    history.push(`/dashboard?date=${reservationFormData.reservation_date}`);
+    if(!errorArray.length){
+      try {
+        await createReservations({ data: reservationFormData });
+        history.push(`/dashboard?date=${reservationFormData.reservation_date}`);
+      } catch (error) {
+        errorArray.push(error.message)
+        setErrors(errorArray)
+      }
+    } else {
+      setErrors(errorArray)
+    }
   };
 
   return (
@@ -101,7 +117,7 @@ export default function ReservationForm() {
             required
           />
         </div>
-        <button type="btn" onClick={handleCancel}>
+        <button type="btn" onClick={() => history.goBack()}>
           Cancel
         </button>
         <button type="submit">Submit</button>

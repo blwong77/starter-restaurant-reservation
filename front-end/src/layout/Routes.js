@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
-import ReservationForm from "../reservations/ReservationForm";
+import Reservations from "../reservations/Reservations";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
@@ -34,7 +34,7 @@ function Routes() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route exact={true} path="/reservations/new">
-        <ReservationForm />
+        <Reservations />
       </Route>
       <Route path="/dashboard">
         <Dashboard date={date} />
