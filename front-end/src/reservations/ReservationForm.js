@@ -28,10 +28,6 @@ export default function ReservationForm() {
         });
   };
 
-  const handleCancel = () => {
-    history.go(-1);
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -101,7 +97,7 @@ export default function ReservationForm() {
             required
           />
         </div>
-        <button type="btn" onClick={handleCancel}>
+        <button type="btn" onClick={() => history.goBack()}>
           Cancel
         </button>
         <button type="submit">Submit</button>
