@@ -39,8 +39,8 @@ module.exports = {
     checkLastName,
     checkMobileNumber,
     checkPeople,
-    checkTime,
     checkDate,
+    checkTime,
     create,
   ],
 };
