@@ -10,12 +10,7 @@ function checkDate(req, res, next) {
         message: "The restaurant is closed on Tuesdays.",
       });
     }
-    if (
-      reservationDate.getUTCFullYear() < currentDate.getUTCFullYear &&
-      reservationDate.getUTCMonth() < currentDate.getUTCMonth() &&
-      reservationDate.getUTCDate() < currentDate.getUTCDate()
-    ) {
-      console.log(reservationDate, currentDate);
+    if (reservationDate < currentDate) {
       return next({
         status: 400,
         message: "Please make a reservation for today or a future date.",
