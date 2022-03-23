@@ -18,7 +18,7 @@ function checkDate(req, res, next) {
       console.log(reservationDate, currentDate);
       return next({
         status: 400,
-        message: "Please make a reservation for today or a future date. Server",
+        message: "Please make a reservation for today or a future date.",
       });
     }
     if (String(new Date(date)) !== "Invalid Date") {
