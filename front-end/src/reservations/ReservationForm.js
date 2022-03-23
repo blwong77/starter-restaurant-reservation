@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { createReservations } from "../utils/api";
-import { today } from "../utils/date-time";
+import { formatAsTime, isToday, today } from "../utils/date-time";
 
 export default function ReservationForm({ setErrors }) {
   const INITIAL_RESERVATION_FORM_DATA = {
@@ -13,7 +13,7 @@ export default function ReservationForm({ setErrors }) {
     people: "",
   };
   const history = useHistory();
-  
+
   const [reservationFormData, setReservationFormData] = useState({
     ...INITIAL_RESERVATION_FORM_DATA,
   });
@@ -32,28 +32,56 @@ export default function ReservationForm({ setErrors }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const errorArray = [];  
-    
-    //Date Validation - Restaurant is closed on 2/Tuesday
-    const reservationDate = new Date(reservationFormData.reservation_date)
-    const currentDate = new Date(today())
-    if(reservationDate.getUTCDay() === 2) {
-      errorArray.push("The restaurant is closed on Tuesdays.")
+    const errorArray = [];
+
+    // Date Validation - Restaurant is closed on 2/Tuesday
+    const reservationDate = new Date(reservationFormData.reservation_date);
+    const currentDate = new Date(today());
+    if (reservationDate.getUTCDay() === 2) {
+      errorArray.push("The restaurant is closed on Tuesdays.");
     }
-    if(reservationDate < currentDate) {
-      errorArray.push("Please place a reservation for today or a future day.")
+    if (reservationDate < currentDate) {
+      errorArray.push("Please place a reservation for today or a future day.");
     }
 
-    if(!errorArray.length){
+    // Time Validation - Reservations begin at 10:30 am and end at 9:30 pm
+    const reservationHours = reservationFormData.reservation_time.slice(0, 2);
+    const reservationMinutes = reservationFormData.reservation_time.slice(3);
+    const currentTime = new Date().toTimeString();
+    const currentHours = formatAsTime(currentTime).slice(0, 2);
+    const currentMinutes = formatAsTime(currentTime).slice(3);
+
+    if (reservationHours < 10 || reservationHours > 21) {
+      errorArray.push("The restaurant is closed during that time.");
+    } else if (
+      (reservationHours === "10" && reservationMinutes < 30) ||
+      (reservationHours === "21" && reservationMinutes > 30)
+    ) {
+      errorArray.push("The restaurant is closed during that time.");
+    }
+
+    if (isToday(reservationDate)) {
+      if (reservationHours < currentHours) {
+        errorArray.push("Please place a reservation during a future time.");
+      } else if (
+        reservationHours === currentHours &&
+        reservationMinutes < currentMinutes
+      ) {
+        errorArray.push("Please place a reservation during a future time.");
+      }
+    }
+
+    // Make Post Request if there are no errors
+    if (!errorArray.length) {
       try {
         await createReservations({ data: reservationFormData });
         history.push(`/dashboard?date=${reservationFormData.reservation_date}`);
       } catch (error) {
-        errorArray.push(error.message)
-        setErrors(errorArray)
+        errorArray.push(error.message);
+        setErrors(errorArray);
       }
     } else {
-      setErrors(errorArray)
+      setErrors(errorArray);
     }
   };
 
