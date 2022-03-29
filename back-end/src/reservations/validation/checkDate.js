@@ -1,8 +1,7 @@
 function checkDate(req, res, next) {
   const date = req.body.data.reservation_date;
-
   if (date) {
-    const reservationDate = new Date(date);
+    const reservationDate = new Date(`${date}T00:00:00`);
     const currentDate = new Date();
     if (reservationDate.getUTCDay() === 2) {
       return next({
