@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { createReservations } from "../utils/api";
-import { formatAsTime, isToday, today } from "../utils/date-time";
+import { formatAsTime, isToday } from "../utils/date-time";
 
 export default function ReservationForm({ setErrors }) {
   const INITIAL_RESERVATION_FORM_DATA = {
@@ -35,8 +35,8 @@ export default function ReservationForm({ setErrors }) {
     const errorArray = [];
 
     // Date Validation - Restaurant is closed on 2/Tuesday
-    const reservationDate = new Date(reservationFormData.reservation_date);
-    const currentDate = new Date(today());
+    const reservationDate = new Date(`${reservationFormData.reservation_date}T${reservationFormData.reservation_time}:00-07:00`);
+    const currentDate = new Date();
     if (reservationDate.getUTCDay() === 2) {
       errorArray.push("The restaurant is closed on Tuesdays.");
     }
