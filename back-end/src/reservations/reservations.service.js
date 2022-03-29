@@ -24,7 +24,12 @@ function createReservation(reservation) {
     .then((res) => res[0]);
 }
 
+function readReservation(reservation_id) {
+  return knex("reservations").where({reservation_id}).first();
+}
+
 module.exports = {
   getReservationsByDate,
   createReservation,
+  readReservation,
 };
