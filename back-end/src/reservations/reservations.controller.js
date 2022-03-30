@@ -30,10 +30,8 @@ async function read(req, res) {
 }
 
 async function create(req, res) {
-  const reservationData = res.locals.reservationData;
-
-  const newReservation = await service.createReservation(reservationData);
-  res.status(201).json({ data: newReservation });
+  const data = await service.createReservation(res.locals.reservationData);
+  res.status(201).json({ data });
 }
 
 module.exports = {
