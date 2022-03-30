@@ -12,13 +12,12 @@ import TablesTable from "./TablesTable/TablesTable";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date, tables, setTables }) {
-  const [reservations, setReservations] = useState([]);
+function Dashboard({ date, reservations, setReservations, tables, setTables }) {
   const [reservationsError, setReservationsError] = useState(null);
   const [tablesError, setTablesError] = useState(null);
   const history = useHistory();
 
-  useEffect(loadDashboard, [date, setTables]);
+  useEffect(loadDashboard, [date, setReservations, setTables]);
 
   function loadDashboard() {
     const abortController = new AbortController();
@@ -27,10 +26,8 @@ function Dashboard({ date, tables, setTables }) {
       .then(setReservations)
       .catch(setReservationsError);
 
-    setTablesError(null)
-    listTables(abortController.signal)
-      .then(setTables)
-      .catch(setTablesError)
+    setTablesError(null);
+    listTables(abortController.signal).then(setTables).catch(setTablesError);
     return () => abortController.abort();
   }
 
@@ -70,7 +67,7 @@ function Dashboard({ date, tables, setTables }) {
         <ErrorAlert errors={reservationsError} />
         <ReservationsTable reservations={reservations} />
         <ErrorAlert errors={tablesError} />
-        <TablesTable tables={tables} />
+        <TablesTable date={date} tables={tables} setTables={setTables} setReservations={setReservations} />
       </main>
     </div>
   );

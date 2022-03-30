@@ -23,8 +23,8 @@ function checkTime(req, res, next) {
 
     if (isToday(resDate)) {
       const currentTime = new Date();
-      const currentHours = currentTime.slice(0, 2);
-      const currentMinutes = currentTime.slice(3);
+      const currentHours = String(currentTime).slice(0, 2);
+      const currentMinutes = String(currentTime).slice(3);
       if (
         (hours < currentHours) ||
         (hours === currentHours && minutes < currentMinutes)

@@ -38,13 +38,13 @@ export default function Reservation () {
     const errorArray = [];
 
     // Date Validation - Restaurant is closed on 2/Tuesday
-    const reservationDate = new Date(`${reservationFormData.reservation_date}T${reservationFormData.reservation_time}Z`);
+    const reservationDate = new Date(`${reservationFormData.reservation_date}T${reservationFormData.reservation_time}-0700`);
     const currentDate = new Date();
     if (reservationDate.getUTCDay() === 2) {
       errorArray.push("The restaurant is closed on Tuesdays.");
     }
     if (reservationDate < currentDate) {
-      errorArray.push("Please place a reservation for today or a future day.");
+      errorArray.push("Please place a reservation for today or a future day. front");
     }
 
     // Time Validation - Reservations begin at 10:30 am and end at 9:30 pm
@@ -56,12 +56,12 @@ export default function Reservation () {
     const currentMinutes = formatAsTime(currentTime).slice(3);
 
     if (reservationHours < 10 || reservationHours > 21) {
-      errorArray.push("The restaurant is closed during that time.");
+      errorArray.push("The restaurant is closed during that time. 1st");
     } else if (
       (reservationHours === "10" && reservationMinutes < 30) ||
       (reservationHours === "21" && reservationMinutes > 30)
     ) {
-      errorArray.push("The restaurant is closed during that time.");
+      errorArray.push("The restaurant is closed during that time. 2nd");
     }
 
     if (isToday(reservationDate)) {

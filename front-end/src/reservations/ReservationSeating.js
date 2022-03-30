@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router";
 import { listTables, updateTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
-export default function ReservationSeating({ tables, setTables }) {
+export default function ReservationSeating({ reservations, tables, setTables }) {
   const history = useHistory();
   const { reservation_id } = useParams();
   const [seatingError, setSeatingError] = useState([]);
@@ -71,7 +71,7 @@ export default function ReservationSeating({ tables, setTables }) {
             {tables.map((table) => {
               return (
                 <option key={table.table_id} value={table.table_id}>
-                  {table.table_name}: capacity {table.capacity}
+                  {table.table_name} - {table.capacity}
                 </option>
               );
             })}

@@ -1,4 +1,5 @@
 const service = require("./reservations.service");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 
 /**
  * Validation Imports
@@ -11,6 +12,9 @@ const checkMobileNumber = require("./validation/checkMobileNumber");
 const checkPeople = require("./validation/checkPeople");
 const checkTime = require("./validation/checkTime");
 const checkDate = require("./validation/checkDate");
+const checkBooked = require("./validation/checkBooked");
+const checkStatus = require("./validation/checkStatus");
+const checkFinished = require("./validation/checkFinished");
 
 /**
  * List handler for reservation resources
@@ -34,8 +38,16 @@ async function create(req, res) {
   res.status(201).json({ data });
 }
 
+async function updateStatus(req, res) {
+  const { reservation_id } = req.params;
+  const updatedReservation = { ...req.body.data, reservation_id };
+  const data = await service.updateStatus(updatedReservation);
+
+  res.json({ data });
+}
+
 module.exports = {
-  list,
+  list: [asyncErrorBoundary(list)],
   read: [checkReservation, read],
   create: [
     checkData,
@@ -45,6 +57,8 @@ module.exports = {
     checkPeople,
     checkDate,
     checkTime,
-    create
+    checkBooked,
+    create,
   ],
+  updateStatus: [checkReservation, checkStatus, checkFinished, updateStatus],
 };

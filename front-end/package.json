@@ -42,7 +42,7 @@
     "test:start:backend": "npm run test:start --prefix ./../back-end",
     "test:start:frontend": "npx cross-env BROWSER=none NODE_ENV=test react-scripts start",
     "test:unit": "react-scripts test",
-    "prevTest": "run-p -l -r test:start:* test:e2e:run -- us-01 -- us-02 -- us-03"
+    "prevTest": "run-p -l -r test:start:* \"test:e2e:run -- us-01 -- us-02 -- us-03 -- us-04 -- us-05 -- us-06\""
   },
   "eslintConfig": {
     "extends": [

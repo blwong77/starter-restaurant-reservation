@@ -76,7 +76,7 @@ export async function listReservations(params, signal) {
  * A `201` status code on success and the `form data` for the new reservation.
  */
 export async function createReservations(resFormData) {
-  const url = `${API_BASE_URL}/reservations/`;
+  const url = `${API_BASE_URL}/reservations`;
   const options = {
     method: "POST",
     headers,
@@ -86,7 +86,7 @@ export async function createReservations(resFormData) {
 }
 
 export async function listTables(signal) {
-  const url = `${API_BASE_URL}/tables/`;
+  const url = `${API_BASE_URL}/tables`;
   const options = {
     method: "GET",
     headers,
@@ -96,7 +96,7 @@ export async function listTables(signal) {
 }
 
 export async function createTable(tableFormData) {
-  const url = `${API_BASE_URL}/tables/`;
+  const url = `${API_BASE_URL}/tables`;
   const options = {
     method: "POST",
     headers,
@@ -111,6 +111,16 @@ export async function updateTable(table_id, reservation_id, signal) {
     method: "PUT",
     headers,
     body: JSON.stringify({ data: { reservation_id } }),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+export async function finishTable(table_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "DELETE",
+    headers,
     signal,
   };
   return await fetchJson(url, options, {});

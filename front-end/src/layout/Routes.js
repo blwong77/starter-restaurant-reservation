@@ -4,7 +4,7 @@ import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 import Dashboard from "../dashboard/Dashboard";
 import Reservations from "../reservations/Reservations";
-import ReservationSeating from "../reservations/ReservationSeating"
+import ReservationSeating from "../reservations/ReservationSeating";
 import NotFound from "./NotFound";
 import NewTable from "../Tables/NewTable";
 
@@ -19,6 +19,7 @@ import NewTable from "../Tables/NewTable";
 function Routes() {
   const [date, setDate] = useState(today());
   const [tables, setTables] = useState([]);
+  const [reservations, setReservations] = useState([]);
 
   const query = useQuery();
 
@@ -40,10 +41,16 @@ function Routes() {
         <Reservations />
       </Route>
       <Route exact={true} path="/reservations/:reservation_id/seat">
-        <ReservationSeating tables={tables} setTables={setTables} />
+        <ReservationSeating reservations={reservations} tables={tables} setTables={setTables} />
       </Route>
       <Route path="/dashboard">
-        <Dashboard date={date} tables={tables} setTables={setTables} />
+        <Dashboard
+          date={date}
+          reservations={reservations}
+          setReservations={setReservations}
+          tables={tables}
+          setTables={setTables}
+        />
       </Route>
       <Route exact={true} path="/tables/new">
         <NewTable />

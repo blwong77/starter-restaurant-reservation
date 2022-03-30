@@ -13,7 +13,7 @@ const checkSeated = require("./validation/checkSeated");
 const checkOccupied = require("./validation/checkOccupied");
 const checkTableCapacity = require("./validation/checkTableCapacity");
 const checkResId = require("./validation/checkResId");
-const checkNotOccupied = require("./validation/checkNotOccupied")
+const checkNotOccupied = require("./validation/checkNotOccupied");
 
 async function list(req, res) {
   const data = await service.getTables();
@@ -25,6 +25,7 @@ async function create(req, res) {
   const newTable = {
     table_name: res.locals.table_name,
     capacity: res.locals.capacity,
+    reservation_id: req.body.data.reservation_id,
   };
 
   const data = await service.createTable(newTable);
@@ -51,13 +52,17 @@ async function update(req, res) {
 
 async function finishTable(req, res) {
   const { table } = res.locals;
-  const reservation = await reservationService.readReservation(table.reservation_id);
+  const reservation = await reservationService.readReservation(
+    table.reservation_id
+  );
   table.reservation_id = null;
   table.status = "free";
   reservation.status = "finished";
 
   const updatedTable = await service.updateTable(table);
-  const updatedReservation = await reservationService.updateReservation(reservation);
+  const updatedReservation = await reservationService.updateReservation(
+    reservation
+  );
   res.json({ data: [updatedTable, updatedReservation] });
 }
 
