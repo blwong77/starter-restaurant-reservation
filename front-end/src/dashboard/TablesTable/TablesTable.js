@@ -1,8 +1,15 @@
 import React from "react";
 import TableHeaders from "../common/TableHeaders";
-import { finishTable, listReservations, listTables } from "../../utils/api";
+import { finishTable, listTables } from "../../utils/api";
+import { useHistory } from "react-router";
 
-export default function TablesTable({ date, tables, setTables, setReservations }) {
+export default function TablesTable({
+  date,
+  tables,
+  setTables,
+  setReservations,
+}) {
+  const history = useHistory();
 
   const handleFinish = (table_id) => {
     if (
@@ -11,10 +18,11 @@ export default function TablesTable({ date, tables, setTables, setReservations }
       )
     ) {
       const abortController = new AbortController();
-      finishTable(table_id, abortController.signal).then(() => {
-        listTables(abortController.signal).then(setTables);
-        listReservations(date, abortController.signal).then(setReservations)
-      });
+      finishTable(table_id, abortController.signal)
+        .then(() => {
+          listTables(abortController.signal).then(setTables);
+          history.push("/");
+        });
 
       return () => abortController.abort();
     }

@@ -85,6 +85,16 @@ export async function createReservations(resFormData) {
   return await fetchJson(url, options, {});
 }
 
+export async function searchReservations(mobile_number, signal) {
+  const url = `${API_BASE_URL}/reservations?mobile_number=${mobile_number}`;
+  const options = {
+    method: "GET",
+    headers,
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
 export async function listTables(signal) {
   const url = `${API_BASE_URL}/tables`;
   const options = {
