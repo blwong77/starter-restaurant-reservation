@@ -11,7 +11,7 @@ import React from "react";
 function ErrorAlert({ errors }) {
   if (!errors) return null;
   return errors.map((error) => {
-    return <div className="alert alert-danger m-2">Error: {error}</div>;
+    return <div key={error} className="alert alert-danger m-2">Error: {error}</div>;
   });
 }
 

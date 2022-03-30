@@ -69,18 +69,59 @@ export async function listReservations(params, signal) {
 }
 
 /**
- * 
- * @param resFormData 
+ *
+ * @param resFormData
  * The reservation form data with fields, `first_name`, `last_name`, `mobile_number`, `people`, `reservation_date`, and `reservation_time`.
- * @returns 
+ * @returns
  * A `201` status code on success and the `form data` for the new reservation.
  */
 export async function createReservations(resFormData) {
-  const url = `${API_BASE_URL}/reservations/`
+  const url = `${API_BASE_URL}/reservations`;
   const options = {
     method: "POST",
     headers,
-    body: JSON.stringify(resFormData),
-  }
+    body: JSON.stringify({ data: resFormData }),
+  };
+  return await fetchJson(url, options, {});
+}
+
+export async function listTables(signal) {
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    method: "GET",
+    headers,
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+export async function createTable(tableFormData) {
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data: tableFormData }),
+  };
+  return await fetchJson(url, options, {});
+}
+
+export async function updateTable(table_id, reservation_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: { reservation_id } }),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+export async function finishTable(table_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "DELETE",
+    headers,
+    signal,
+  };
   return await fetchJson(url, options, {});
 }

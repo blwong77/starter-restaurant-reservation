@@ -23,8 +23,8 @@ function checkTime(req, res, next) {
 
     if (isToday(resDate)) {
       const currentTime = new Date();
-      const currentHours = currentTime.slice(0, 2);
-      const currentMinutes = currentTime.slice(3);
+      const currentHours = String(currentTime).slice(0, 2);
+      const currentMinutes = String(currentTime).slice(3);
       if (
         (hours < currentHours) ||
         (hours === currentHours && minutes < currentMinutes)
@@ -45,9 +45,9 @@ function isToday(date) {
   const today = new Date();
 
   return (
-    date.getUTCDate() === today.getUTCDate() &&
-    date.getUTCMonth() === today.getUTCMonth() &&
-    date.getUTCFullYear() === today.getUTCFullYear()
+    date.getDate() === today.getUTCDate() &&
+    date.getMonth() === today.getUTCMonth() &&
+    date.getFullYear() === today.getUTCFullYear()
   );
 }
 
