@@ -45,9 +45,9 @@ function isToday(date) {
   const today = new Date();
 
   return (
-    date.getUTCDate() === today.getUTCDate() &&
-    date.getUTCMonth() === today.getUTCMonth() &&
-    date.getUTCFullYear() === today.getUTCFullYear()
+    date.getDate() === today.getUTCDate() &&
+    date.getMonth() === today.getUTCMonth() &&
+    date.getFullYear() === today.getUTCFullYear()
   );
 }
 
