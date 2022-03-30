@@ -1,5 +1,5 @@
 const service = require("./reservations.service");
-const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 /**
  * Validation Imports
@@ -15,18 +15,13 @@ const checkDate = require("./validation/checkDate");
 const checkBooked = require("./validation/checkBooked");
 const checkStatus = require("./validation/checkStatus");
 const checkFinished = require("./validation/checkFinished");
+const checkQuery = require("./validation/checkQuery");
 
 /**
  * List handler for reservation resources
  */
 async function list(req, res) {
-  let date = req.query.date;
-  if (!date) date = new Date().toISOString().slice(0, 10);
-
-  const data = await service.getReservationsByDate(date);
-  res.json({
-    data,
-  });
+  res.json({data: res.locals.reservations});
 }
 
 async function read(req, res) {
@@ -47,7 +42,7 @@ async function updateStatus(req, res) {
 }
 
 module.exports = {
-  list: [asyncErrorBoundary(list)],
+  list: [checkQuery, asyncErrorBoundary(list)],
   read: [checkReservation, read],
   create: [
     checkData,
