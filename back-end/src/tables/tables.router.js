@@ -8,6 +8,10 @@ router
   .post(controller.create)
   .all(methodNotAllowed);
 
-router.route("/:table_id/seat")
+router
+  .route("/:table_id/seat")
+  .get(controller.read)
+  .put(controller.update)
+  .all(methodNotAllowed);
 
 module.exports = router;

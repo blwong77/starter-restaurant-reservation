@@ -8,7 +8,7 @@ async function checkReservation(req, res, next) {
     res.locals.reservation = reservation;
     return next();
   }
-  next({status: 404, message: "reservation doesn't exist."})
+  next({status: 404, message: `reservation #${reservation_id} doesn't exist.`})
 }
 
 module.exports = checkReservation;

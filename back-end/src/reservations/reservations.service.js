@@ -4,15 +4,7 @@ const table = "reservations";
 
 function getReservationsByDate(date) {
   return knex(table)
-    .select(
-      "reservation_id",
-      "first_name",
-      "last_name",
-      "mobile_number",
-      "reservation_date",
-      "reservation_time",
-      "people"
-    )
+    .select("*")
     .where({ reservation_date: date })
     .orderBy("reservation_time");
 }
@@ -25,11 +17,18 @@ function createReservation(reservation) {
 }
 
 function readReservation(reservation_id) {
-  return knex("reservations").where({reservation_id}).first();
+  return knex(table).where({ reservation_id }).first();
+}
+
+function updateReservation(reservation) {
+  return knex(table)
+    .where({ reservation_id: reservation.reservation_id })
+    .update(reservation, "*");
 }
 
 module.exports = {
   getReservationsByDate,
   createReservation,
   readReservation,
+  updateReservation,
 };

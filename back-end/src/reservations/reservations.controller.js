@@ -3,14 +3,14 @@ const service = require("./reservations.service");
 /**
  * Validation Imports
  */
-const checkData = require("./validation/checkData");
+const checkData = require("../common/validation/checkData");
+const checkReservation = require("./validation/checkReservation");
 const checkFirstName = require("./validation/checkFirstName");
 const checkLastName = require("./validation/checkLastName");
 const checkMobileNumber = require("./validation/checkMobileNumber");
 const checkPeople = require("./validation/checkPeople");
 const checkTime = require("./validation/checkTime");
 const checkDate = require("./validation/checkDate");
-const checkReservation = require("./validation/checkReservation");
 
 /**
  * List handler for reservation resources
@@ -47,6 +47,6 @@ module.exports = {
     checkPeople,
     checkDate,
     checkTime,
-    create,
+    create
   ],
 };
