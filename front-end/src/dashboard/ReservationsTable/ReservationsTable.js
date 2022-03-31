@@ -14,15 +14,19 @@ export default function ReservationsTable({ reservations }) {
         "Do you want to cancel this reservation? This cannot be undone."
       )
     ) {
-      const abortController = new AbortController();
-      await updateReservationStatus(
-        reservation_id,
-        "cancelled",
-        abortController.signal
-      );
-      history.push("/");
+      try{
+        const abortController = new AbortController();
+        await updateReservationStatus(
+          reservation_id,
+          "cancelled",
+          abortController.signal
+        );
+        history.push("/");
+        return () => abortController.abort();
+      } catch(error) {
+        console.error(error.message)
+      }
 
-      return () => abortController.abort();
     }
   };
 

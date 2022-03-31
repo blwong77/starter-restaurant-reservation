@@ -39,9 +39,9 @@ export default function ReservationEdit({
         });
   };
 
-  const submitFunction = async (event) => {
+  const submitFunction = (event) => {
     const abortController = new AbortController();
-    await updateReservation(reservationFormData, abortController.signal);
+    updateReservation(reservationFormData, abortController.signal);
   };
 
   return (
