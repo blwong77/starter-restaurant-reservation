@@ -65,7 +65,7 @@ export default function ReservationSeating({ reservations, tables, setTables }) 
         <div>
           <p>Select a table to seat the reservation</p>
           <select name="table_id" id="table_id" onChange={handleChange}>
-            <option key={0} value={0}>
+            <option value={0}>
               -- Select a Table --
             </option>
             {tables.map((table) => {
