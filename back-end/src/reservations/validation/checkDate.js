@@ -27,6 +27,8 @@ function isPast(resDate) {
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
 
+  console.log("resdate", resDate, "currentDate", currentDate);
+
   return resDate < currentDate;
 }
 
