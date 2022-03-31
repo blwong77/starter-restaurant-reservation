@@ -21,7 +21,7 @@ const checkQuery = require("./validation/checkQuery");
  * List handler for reservation resources
  */
 async function list(req, res) {
-  res.json({data: res.locals.reservations});
+  res.status(200).json({ data: res.locals.reservations });
 }
 
 async function read(req, res) {
@@ -33,12 +33,20 @@ async function create(req, res) {
   res.status(201).json({ data });
 }
 
+async function update(req, res) {
+  const { reservation_id } = res.locals.reservation;
+  const updatedReservation = { ...req.body.data, reservation_id };
+  const data = await service.updateReservation(updatedReservation);
+
+  res.status(200).json({ data });
+}
+
 async function updateStatus(req, res) {
   const { reservation_id } = req.params;
   const updatedReservation = { ...req.body.data, reservation_id };
   const data = await service.updateStatus(updatedReservation);
 
-  res.json({ data });
+  res.status(200).json({ data });
 }
 
 module.exports = {
@@ -54,6 +62,17 @@ module.exports = {
     checkTime,
     checkBooked,
     create,
+  ],
+  update: [
+    checkData,
+    checkFirstName,
+    checkLastName,
+    checkMobileNumber,
+    checkPeople,
+    checkDate,
+    checkTime,
+    checkReservation,
+    update,
   ],
   updateStatus: [checkReservation, checkStatus, checkFinished, updateStatus],
 };
