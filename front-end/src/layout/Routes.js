@@ -25,7 +25,7 @@ function Routes() {
     mobile_number: "",
     reservation_date: "",
     reservation_time: "",
-    people: "",
+    people: 0,
     status: "booked",
   };
 
@@ -43,17 +43,7 @@ function Routes() {
     checkDateQuery ? setDate(query.get("date")) : setDate(today());
   }, [query, setDate]);
 
-  const handleInput = ({ target }) => {
-    target.id === "people"
-      ? setReservationFormData({
-          ...reservationFormData,
-          [target.id]: Number(target.value),
-        })
-      : setReservationFormData({
-          ...reservationFormData,
-          [target.id]: target.value,
-        });
-  };
+
 
   return (
     <Switch>
@@ -64,10 +54,7 @@ function Routes() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route exact={true} path="/reservations/new">
-        <NewReservation
-          reservationFormData={reservationFormData}
-          handleInput={handleInput}
-        />
+        <NewReservation />
       </Route>
       <Route exact={true} path="/reservations/:reservation_id/seat">
         <ReservationSeating
@@ -80,7 +67,6 @@ function Routes() {
         <ReservationEdit
           reservationFormData={reservationFormData}
           setReservationFormData={setReservationFormData}
-          handleInput={handleInput}
         />
       </Route>
       <Route path="/dashboard">

@@ -7,7 +7,6 @@ import ReservationForm from "./ReservationForm";
 export default function ReservationEdit({
   reservationFormData,
   setReservationFormData,
-  handleInput,
 }) {
   const { reservation_id } = useParams();
   const [editErrors, setEditErrors] = useState([]);
@@ -27,6 +26,18 @@ export default function ReservationEdit({
         });
     }
   }, [reservation_id, setReservationFormData]);
+
+  const handleInput = ({ target }) => {
+    target.id === "people"
+      ? setReservationFormData({
+          ...reservationFormData,
+          [target.id]: Number(target.value),
+        })
+      : setReservationFormData({
+          ...reservationFormData,
+          [target.id]: target.value,
+        });
+  };
 
   const submitFunction = async (event) => {
     const abortController = new AbortController();
