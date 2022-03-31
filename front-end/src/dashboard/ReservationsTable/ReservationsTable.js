@@ -1,9 +1,31 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
+import { updateReservationStatus } from "../../utils/api";
 import TableHeaders from "../common/TableHeaders";
 
 export default function ReservationsTable({ reservations }) {
+  const history = useHistory();
   let reservationList = [];
+
+  const handleCancel = async (reservation_id) => {
+    if (
+      window.confirm(
+        "Do you want to cancel this reservation? This cannot be undone."
+      )
+    ) {
+      const abortController = new AbortController();
+      await updateReservationStatus(
+        reservation_id,
+        "cancelled",
+        abortController.signal
+      );
+      history.push("/");
+
+      return () => abortController.abort();
+    }
+  };
+
   if (reservations.length > 0) {
     reservationList = reservations.map((res) => {
       return (
@@ -23,6 +45,22 @@ export default function ReservationsTable({ reservations }) {
                 >
                   Seat
                 </Link>
+                <Link
+                  className="btn btn-primary"
+                  to={`/reservations/${res.reservation_id}/edit`}
+                >
+                  Edit
+                </Link>
+                {res.status !== "cancelled" && res.status !== "finished" && (
+                  <button
+                    className="btn btn-danger"
+                    type="button"
+                    data-reservation-id-cancel={res.reservation_id}
+                    onClick={() => handleCancel(res.reservation_id)}
+                  >
+                    Cancel
+                  </button>
+                )}
               </>
             )}
           </td>

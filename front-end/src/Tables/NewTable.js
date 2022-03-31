@@ -25,7 +25,8 @@ export default function NewTable() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await createTable(tableFormData);
+      const abortController = new AbortController();
+      await createTable(tableFormData, abortController.signal);
       history.push("/dashboard");
     } catch (error) {
       setErrorArray([error.message]);

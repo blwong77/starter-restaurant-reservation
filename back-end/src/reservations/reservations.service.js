@@ -24,7 +24,8 @@ function readReservation(reservation_id) {
 function updateReservation(reservation) {
   return knex(table)
     .where({ reservation_id: reservation.reservation_id })
-    .update(reservation, "*");
+    .update(reservation, "*")
+    .then((res) => res[0]);
 }
 
 function updateStatus(reservation) {
