@@ -8,25 +8,20 @@ export default function ReservationsTable({ reservations }) {
   const history = useHistory();
   let reservationList = [];
 
-  const handleCancel = async (reservation_id) => {
+  const handleCancel = (reservation_id) => {
     if (
       window.confirm(
         "Do you want to cancel this reservation? This cannot be undone."
       )
     ) {
-      try{
-        const abortController = new AbortController();
-        await updateReservationStatus(
-          reservation_id,
-          "cancelled",
-          abortController.signal
-        );
-        history.push("/");
-        return () => abortController.abort();
-      } catch(error) {
-        console.error(error.message)
-      }
+      const abortController = new AbortController();
+      updateReservationStatus(
+        reservation_id,
+        "cancelled",
+        abortController.signal
+      ).then(() => history.push("/"));
 
+      return () => abortController.abort();
     }
   };
 

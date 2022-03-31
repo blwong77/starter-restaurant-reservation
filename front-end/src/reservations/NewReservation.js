@@ -31,9 +31,9 @@ export default function NewReservation() {
         });
   };
 
-  const submitFunction = () => {
+  const submitFunction = async () => {
     const abortController = new AbortController();
-    createReservations(newReservationFormData, abortController.signal);
+    await createReservations(newReservationFormData, abortController.signal);
   };
 
   return (

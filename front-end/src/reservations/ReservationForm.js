@@ -19,7 +19,7 @@ export default function ReservationForm({
       `${reservationFormData.reservation_date}T${reservationFormData.reservation_time}-0700`
     );
     const currentDate = new Date();
-    if (reservationDate.getUTCDay() === 2) {
+    if (reservationDate.getDay() === 2) {
       errorArray.push("The restaurant is closed on Tuesdays.");
     }
     if (reservationDate < currentDate) {
