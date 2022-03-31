@@ -1,12 +1,75 @@
 import React from "react";
 import { useHistory } from "react-router";
+import { formatAsTime, isToday } from "../utils/date-time";
 
 export default function ReservationForm({
   reservationFormData,
   handleInput,
-  handleSubmit,
+  submitFunction,
+  setErrors,
 }) {
   const history = useHistory();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const errorArray = [];
+
+    // Date Validation - Restaurant is closed on 2/Tuesday
+    const reservationDate = new Date(
+      `${reservationFormData.reservation_date}T${reservationFormData.reservation_time}-0700`
+    );
+    const currentDate = new Date();
+    if (reservationDate.getUTCDay() === 2) {
+      errorArray.push("The restaurant is closed on Tuesdays.");
+    }
+    if (reservationDate < currentDate) {
+      errorArray.push(
+        "Please place a reservation for today or a future day. front"
+      );
+    }
+
+    // Time Validation - Reservations begin at 10:30 am and end at 9:30 pm
+    const splitResTime = reservationFormData.reservation_time.split(":");
+    const reservationHours = splitResTime[0];
+    const reservationMinutes = splitResTime[1];
+    const currentTime = new Date().toTimeString();
+    const currentHours = formatAsTime(currentTime).slice(0, 2);
+    const currentMinutes = formatAsTime(currentTime).slice(3);
+
+    if (reservationHours < 10 || reservationHours > 21) {
+      errorArray.push("The restaurant is closed during that time. 1st");
+    } else if (
+      (reservationHours === "10" && reservationMinutes < 30) ||
+      (reservationHours === "21" && reservationMinutes > 30)
+    ) {
+      errorArray.push("The restaurant is closed during that time. 2nd");
+    }
+
+    if (isToday(reservationDate)) {
+      if (reservationHours < currentHours) {
+        errorArray.push("Please place a reservation during a future time.");
+      } else if (
+        reservationHours === currentHours &&
+        reservationMinutes < currentMinutes
+      ) {
+        errorArray.push("Please place a reservation during a future time.");
+      }
+    }
+
+    // Make Post Request if there are no errors
+    if (!errorArray.length) {
+      try {
+        await submitFunction()
+        history.push(`/dashboard?date=${reservationFormData.reservation_date}`);
+      } catch (error) {
+        errorArray.push(error.message);
+        setErrors(errorArray);
+      }
+    } else {
+      setErrors(errorArray);
+    }
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -68,10 +131,16 @@ export default function ReservationForm({
           />
         </div>
         <div className="mt-3">
-          <button className="btn btn-secondary" type="btn" onClick={() => history.goBack()}>
+          <button
+            className="btn btn-secondary"
+            type="btn"
+            onClick={() => history.goBack()}
+          >
             Cancel
           </button>
-          <button className="btn btn-primary" type="submit">Submit</button>
+          <button className="btn btn-primary" type="submit">
+            Submit
+          </button>
         </div>
       </form>
     </>

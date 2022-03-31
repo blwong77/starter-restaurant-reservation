@@ -75,12 +75,45 @@ export async function listReservations(params, signal) {
  * @returns
  * A `201` status code on success and the `form data` for the new reservation.
  */
-export async function createReservations(resFormData) {
+export async function createReservations(resFormData, signal) {
   const url = `${API_BASE_URL}/reservations`;
   const options = {
     method: "POST",
     headers,
     body: JSON.stringify({ data: resFormData }),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+export async function readReservation(reservation_id, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+  const options = {
+    method: "GET",
+    headers,
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+export async function updateReservation(updatedReservation, signal) {
+  const url = `${API_BASE_URL}/reservations/${updatedReservation.reservation_id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: updatedReservation }),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+export async function updateReservationStatus(reservation_id, status, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: { status } }),
+    signal,
   };
   return await fetchJson(url, options, {});
 }
@@ -105,12 +138,13 @@ export async function listTables(signal) {
   return await fetchJson(url, options, {});
 }
 
-export async function createTable(tableFormData) {
+export async function createTable(tableFormData, signal) {
   const url = `${API_BASE_URL}/tables`;
   const options = {
     method: "POST",
     headers,
     body: JSON.stringify({ data: tableFormData }),
+    signal,
   };
   return await fetchJson(url, options, {});
 }
