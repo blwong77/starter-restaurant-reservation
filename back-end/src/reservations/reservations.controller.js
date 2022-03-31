@@ -50,8 +50,8 @@ async function updateStatus(req, res) {
 }
 
 module.exports = {
-  list: [checkQuery, asyncErrorBoundary(list)],
-  read: [checkReservation, read],
+  list: [asyncErrorBoundary(checkQuery), asyncErrorBoundary(list)],
+  read: [asyncErrorBoundary(checkReservation), asyncErrorBoundary(read)],
   create: [
     checkData,
     checkFirstName,
@@ -61,7 +61,7 @@ module.exports = {
     checkDate,
     checkTime,
     checkBooked,
-    create,
+    asyncErrorBoundary(create),
   ],
   update: [
     checkData,
@@ -71,8 +71,13 @@ module.exports = {
     checkPeople,
     checkDate,
     checkTime,
-    checkReservation,
-    update,
+    asyncErrorBoundary(checkReservation),
+    asyncErrorBoundary(update),
   ],
-  updateStatus: [checkReservation, checkStatus, checkFinished, updateStatus],
+  updateStatus: [
+    asyncErrorBoundary(checkReservation),
+    checkStatus,
+    checkFinished,
+    asyncErrorBoundary(updateStatus),
+  ],
 };

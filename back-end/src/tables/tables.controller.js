@@ -67,18 +67,27 @@ async function finishTable(req, res) {
 }
 
 module.exports = {
-  list,
-  create: [checkData, checkCapacity, checkTableName, create],
-  read: [checkTable, read],
+  list: [asyncErrorBoundary(list)],
+  create: [
+    checkData,
+    checkCapacity,
+    checkTableName,
+    asyncErrorBoundary(create),
+  ],
+  read: [asyncErrorBoundary(checkTable), read],
   update: [
     checkData,
     checkResId,
-    checkReservation,
-    checkTable,
+    asyncErrorBoundary(checkReservation),
+    asyncErrorBoundary(checkTable),
     checkSeated,
     checkOccupied,
     checkTableCapacity,
-    update,
+    asyncErrorBoundary(update),
   ],
-  delete: [checkTable, checkNotOccupied, finishTable],
+  delete: [
+    asyncErrorBoundary(checkTable),
+    checkNotOccupied,
+    asyncErrorBoundary(finishTable),
+  ],
 };
